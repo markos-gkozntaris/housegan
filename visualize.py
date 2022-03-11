@@ -25,8 +25,9 @@ import svgwrite
 from input_graphs import *
 from models import Generator
 
+# cpu initially used was 16
 parser = argparse.ArgumentParser()
-parser.add_argument("--n_cpu", type=int, default=16, help="number of cpu threads to use during batch generation")
+parser.add_argument("--n_cpu", type=int, default=4, help="number of cpu threads to use during batch generation")
 parser.add_argument("--latent_dim", type=int, default=20, help="dimensionality of the latent space")
 parser.add_argument("--batch_size", type=int, default=2, help="size of the batches")
 parser.add_argument("--img_size", type=int, default=4, help="size of each image dimension")
