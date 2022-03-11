@@ -19,9 +19,25 @@ from PIL import Image, ImageDraw, ImageOps
 from utils import combine_images_maps, rectangle_renderer
 from models import Discriminator, Generator, compute_gradient_penalty, weights_init_normal
 
+# parser = argparse.ArgumentParser()
+# parser.add_argument("--n_epochs", type=int, default=1000000, help="number of epochs of training")
+# parser.add_argument("--batch_size", type=int, default=32, help="size of the batches")
+# parser.add_argument("--g_lr", type=float, default=0.0001, help="adam: learning rate")
+# parser.add_argument("--d_lr", type=float, default=0.0001, help="adam: learning rate")
+# parser.add_argument("--b1", type=float, default=0.5, help="adam: decay of first order momentum of gradient")
+# parser.add_argument("--b2", type=float, default=0.999, help="adam: decay of first order momentum of gradient")
+# parser.add_argument("--n_cpu", type=int, default=8, help="number of cpu threads to use during batch generation")
+# parser.add_argument("--latent_dim", type=int, default=128, help="dimensionality of the latent space")
+# parser.add_argument("--img_size", type=int, default=32, help="size of each image dimension")
+# parser.add_argument("--sample_interval", type=int, default=50000, help="interval between image sampling")
+# parser.add_argument("--exp_folder", type=str, default='exp', help="destination folder")
+# parser.add_argument("--n_critic", type=int, default=1, help="number of training steps for discriminator per iter")
+# parser.add_argument("--target_set", type=str, default='A', help="which split to remove")
+# opt = parser.parse_args()
+
 parser = argparse.ArgumentParser()
-parser.add_argument("--n_epochs", type=int, default=1000000, help="number of epochs of training")
-parser.add_argument("--batch_size", type=int, default=32, help="size of the batches")
+parser.add_argument("--n_epochs", type=int, default=100, help="number of epochs of training")
+parser.add_argument("--batch_size", type=int, default=4, help="size of the batches")
 parser.add_argument("--g_lr", type=float, default=0.0001, help="adam: learning rate")
 parser.add_argument("--d_lr", type=float, default=0.0001, help="adam: learning rate")
 parser.add_argument("--b1", type=float, default=0.5, help="adam: decay of first order momentum of gradient")
@@ -37,7 +53,8 @@ opt = parser.parse_args()
 
 cuda = True if torch.cuda.is_available() else False
 lambda_gp = 10
-multi_gpu = True
+# multi_gpu = True
+multi_gpu = False
 # exp_folder = "{}_{}_g_lr_{}_d_lr_{}_bs_{}_ims_{}_ld_{}_b1_{}_b2_{}".format(opt.exp_folder, opt.target_set, opt.g_lr, opt.d_lr, \
 #                                                                         opt.batch_size, opt.img_size, \
 #                                                                         opt.latent_dim, opt.b1, opt.b2)
@@ -139,7 +156,9 @@ def visualizeSingleBatch(fp_loader_test, opt):
     return
 
 # Configure data loader
-rooms_path = '/home/nelson/Workspace/autodesk/housegan/'
+# rooms_path = '/home/nelson/Workspace/autodesk/housegan/'
+rooms_path = '../housegan-master/train_data/'
+
 fp_dataset_train = FloorplanGraphDataset(rooms_path, transforms.Normalize(mean=[0.5], std=[0.5]), target_set=opt.target_set)
 fp_loader = torch.utils.data.DataLoader(fp_dataset_train, 
                                         batch_size=opt.batch_size, 
