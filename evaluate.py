@@ -31,8 +31,20 @@ from floorplan_dataset_no_masks import is_adjacent
 from tqdm import tqdm
 from collections import defaultdict
 
+# parser = argparse.ArgumentParser()
+# parser.add_argument("--n_cpu", type=int, default=16, help="number of cpu threads to use during batch generation")
+# parser.add_argument("--latent_dim", type=int, default=20, help="dimensionality of the latent space")
+# parser.add_argument("--batch_size", type=int, default=1, help="size of the batches")
+# parser.add_argument("--img_size", type=int, default=4, help="size of each image dimension")
+# parser.add_argument("--channels", type=int, default=1, help="number of image channels")
+# parser.add_argument("--with_boundary", action='store_true', default=True, help="include floorplan footprint")
+# parser.add_argument("--num_variations", type=int, default=10, help="number of variations")
+# parser.add_argument("--exp_folder", type=str, default='exp', help="destination folder")
+# # parser.add_argument("--checkpoint", type=str, default='checkpoints/gen_neighbour_exp_10_nodes_train_split_1000000.pth', help="destination folder")
+
+# todo
 parser = argparse.ArgumentParser()
-parser.add_argument("--n_cpu", type=int, default=16, help="number of cpu threads to use during batch generation")
+parser.add_argument("--n_cpu", type=int, default=4, help="number of cpu threads to use during batch generation")
 parser.add_argument("--latent_dim", type=int, default=20, help="dimensionality of the latent space")
 parser.add_argument("--batch_size", type=int, default=1, help="size of the batches")
 parser.add_argument("--img_size", type=int, default=4, help="size of each image dimension")
@@ -106,7 +118,9 @@ img_shape = (opt.channels, opt.img_size, opt.img_size)
 cuda = True if torch.cuda.is_available() else False
 if cuda:
     generator.cuda()
-rooms_path = '/local-scratch2/nnauata/autodesk/FloorplanDataset/'
+# todo
+# rooms_path = '/local-scratch2/nnauata/autodesk/FloorplanDataset/'
+rooms_path = '../housegan-master/train_data/'
 
 # Initialize dataset iterator
 fp_dataset = FloorplanGraphDataset(rooms_path, split='test')

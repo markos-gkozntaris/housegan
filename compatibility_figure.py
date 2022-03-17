@@ -27,7 +27,8 @@ import matplotlib.pyplot as plt
 import networkx as nx
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--n_cpu", type=int, default=16, help="number of cpu threads to use during batch generation")
+# parser.add_argument("--n_cpu", type=int, default=16, help="number of cpu threads to use during batch generation")
+parser.add_argument("--n_cpu", type=int, default=4, help="number of cpu threads to use during batch generation")
 parser.add_argument("--latent_dim", type=int, default=128, help="dimensionality of the latent space")
 parser.add_argument("--batch_size", type=int, default=1, help="size of the batches")
 parser.add_argument("--channels", type=int, default=1, help="number of image channels")
@@ -41,7 +42,9 @@ numb_iters = 200000
 exp_name = 'exp_with_graph_global_new'
 target_set = 'D'
 phase='eval'
-checkpoint = './checkpoints/{}_{}_{}.pth'.format(exp_name, target_set, numb_iters)
+# checkpoint = './checkpoints/{}_{}_{}.pth'.format(exp_name, target_set, numb_iters)
+# todo
+checkpoint = '../housegan/exp_demo_D_500000.pth'
 
 def make_sequence(given_nds, given_eds, noise):
     n_nodes = given_nds.shape[0]
@@ -86,7 +89,10 @@ def draw_graph(g_true):
     colors = ['black' for u,v in edges]
     weights = [4 for u,v in edges]
 
-    nx.draw(G_true, pos, node_size=1000, node_color=colors_H, font_size=0, font_weight='bold', edges=edges, edge_color=colors, width=weights)
+    # todo
+    # nx.draw(G_true, pos, node_size=1000, node_color=colors_H, font_size=0, font_weight='bold', edges=edges, edge_color=colors, width=weights)
+    nx.draw(G_true, pos, node_size=1000, node_color=colors_H, font_size=0, font_weight='bold', edge_color=colors, width=weights)
+
     plt.tight_layout()
     plt.savefig('./dump/_true_graph.jpg', format="jpg")
     rgb_im = Image.open('./dump/_true_graph.jpg')
@@ -113,13 +119,16 @@ os.makedirs(opt.exp_folder, exist_ok=True)
 
 # Initialize generator and discriminator
 generator = Generator()
-generator.load_state_dict(torch.load(checkpoint))
+# todo
+generator.load_state_dict(torch.load(checkpoint,map_location = torch.device('cpu')))
 
 # Initialize variables
 cuda = True if torch.cuda.is_available() else False
 if cuda:
     generator.cuda()
-rooms_path = '/local-scratch4/nnauata/autodesk/FloorplanDataset/'
+# rooms_path = '/local-scratch4/nnauata/autodesk/FloorplanDataset/'
+# todo
+rooms_path = '../housegan/train_data/'
 
 # Initialize dataset iterator
 fp_dataset_test = FloorplanGraphDataset(rooms_path, transforms.Normalize(mean=[0.5], std=[0.5]), target_set=target_set, split=phase)

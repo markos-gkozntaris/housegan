@@ -88,7 +88,8 @@ def draw_floorplan(dwg, junctions, juncs_on, lines_on):
 
 # Initialize generator and discriminator
 generator = Generator()
-generator.load_state_dict(torch.load(opt.checkpoint))
+# todo
+generator.load_state_dict(torch.load(opt.checkpoint, map_location = torch.device('cpu')))
 generator.eval()
 
 # Initialize variables
@@ -97,7 +98,9 @@ if cuda:
     generator.cuda()
 
 # Configure data loader
-rooms_path = '/local-scratch4/nnauata/autodesk/FloorplanDataset/'
+# todo
+# rooms_path = '/local-scratch4/nnauata/autodesk/FloorplanDataset/'
+rooms_path = '../housegan/train_data/'
 fp_dataset = FloorplanGraphDataset(rooms_path, transforms.Normalize(mean=[0.5], std=[0.5]), \
                                    target_set=opt.target_set, split='eval')
 fp_loader = torch.utils.data.DataLoader(fp_dataset, 

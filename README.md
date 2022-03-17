@@ -35,6 +35,15 @@ For training a model from scratch check out the following steps:
 - You may also want to customize the interval for probing the generator by setting sample_interval in main.py.
 - Check out exps and checkpoint folders for intermediate outputs and checkpoints, respectively.
 
+Evaluation
+------
+In order to evaluate diversity, the FID score from https://github.com/mseitzer/pytorch-fid is used. One way to calculate the FID score is to generate on esample for each graph (5k fake) and compare it with the corrresponding GT (5k real).
+So in order to evaluate all 5 metrics provided, to evaluate fro each group the model should be trained with the data of the other groups. Ex. to evaluate 1-3, we need to train a model on 4-6, 7-9, 10-12, 13+.
+
+For compatibility evaluation run python compatibility_figure.py
+
+
+
 Citation
 ------
 ```

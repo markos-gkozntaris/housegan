@@ -19,6 +19,9 @@ from PIL import Image, ImageDraw, ImageOps
 from utils import combine_images_maps, rectangle_renderer
 from models import Discriminator, Generator, compute_gradient_penalty, weights_init_normal
 
+# todo
+from torchsummary import summary
+
 # parser = argparse.ArgumentParser()
 # parser.add_argument("--n_epochs", type=int, default=1000000, help="number of epochs of training")
 # parser.add_argument("--batch_size", type=int, default=32, help="size of the batches")
@@ -69,6 +72,8 @@ adversarial_loss = torch.nn.BCEWithLogitsLoss()
 # Initialize generator and discriminator
 generator = Generator()
 discriminator = Discriminator()
+
+torch.summary(generator)
 
 if cuda:
     generator.cuda()
@@ -144,7 +149,6 @@ def visualizeSingleBatch(fp_loader_test, opt):
             
         # Generate image tensors
         real_imgs_tensor = combine_images_maps(real_mks, given_nds, given_eds, \
-                                               nd_to_sample, ed_to_sample)
         fake_imgs_tensor = combine_images_maps(gen_mks, given_nds, given_eds, \
                                                nd_to_sample, ed_to_sample)
 

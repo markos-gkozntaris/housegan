@@ -68,6 +68,8 @@ cuda = True if torch.cuda.is_available() else False
 if cuda:
     generator.cuda()
 rooms_path = '/local-scratch2/nnauata/autodesk/CubiCasa5k/'
+# todo ( change path above accordingly)
+
 
 # Initialize dataset iterator
 fp_dataset = FloorplanGraphDataset(rooms_path, split='test')
